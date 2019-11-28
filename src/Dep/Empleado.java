@@ -18,11 +18,11 @@ public class Empleado implements Serializable{
     String eapellido;
     int edept;
     int dir;
-    LocalDate fecha_alt;
+    String fecha_alt;
     String oficio;
     double salario;
 
-    public Empleado(int emp_no, String eapellido, int edept, int dir, LocalDate fecha_alt, String oficio, double salario) {
+    public Empleado(int emp_no, String eapellido, int edept, int dir, String fecha_alt, String oficio, double salario) {
         this.emp_no = emp_no;
         this.eapellido = eapellido;
         this.edept = edept;
@@ -66,11 +66,11 @@ public class Empleado implements Serializable{
         this.dir = dir;
     }
 
-    public LocalDate getFecha_alt() {
+    public String getFecha_alt() {
         return fecha_alt;
     }
 
-    public void setFecha_alt(LocalDate fecha_alt) {
+    public void setFecha_alt(String fecha_alt) {
         this.fecha_alt = fecha_alt;
     }
 

@@ -41,11 +41,11 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
             sentencia = conexion.prepareStatement(sql);
             sentencia.setInt(1, emp.getEmp_no());
             sentencia.setString(2, emp.getEapellido());
-            sentencia.setDouble(3, emp.getSalario());
-            sentencia.setInt(4, emp.getEdept());
-            sentencia.setString(5, emp.getOficio());
-            sentencia.setInt(6, emp.getDir());
-            sentencia.setString(6, emp.getFecha_alt().toString());
+            sentencia.setDouble(7, emp.getSalario());
+            sentencia.setInt(3, emp.getEdept());
+            sentencia.setString(6, emp.getOficio());
+            sentencia.setInt(4, emp.getDir());
+            sentencia.setString(5, emp.getFecha_alt());
             int filas = sentencia.executeUpdate();
             //System.out.printf("Filas insertadas: %d%n", filas);
             if (filas > 0) {
@@ -93,7 +93,7 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
             sentencia.setInt(2, emp.getEdept());
             sentencia.setString(3, emp.getOficio());
             sentencia.setInt(2, emp.getDir());
-            sentencia.setString(4, emp.getFecha_alt().toString());
+            sentencia.setString(4, emp.getFecha_alt());
             sentencia.setDouble(5, emp.getSalario());
             int filas = sentencia.executeUpdate();
             //System.out.printf("Filas modificadas: %d%n", filas);

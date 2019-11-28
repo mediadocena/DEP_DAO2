@@ -16,13 +16,13 @@ public class SqlDbDAOFactory extends DAOFactory {
 
     static Connection conexion = null;
     static String DRIVER = "com.mysql.jdbc.Driver";
-    static String URLDB = "https://remotemysql.com/phpmyadmin/db_structure.php?server=1&db=jHNInj7OkW";
+    static String URLDB = "jdbc:mysql://remotemysql.com/phpmyadmin/db_structure.php?server=1&db=jHNInj7OkW";
     static String USUARIO = "jHNInj7OkW";
-    static String CLAVE = "juKkdXld9B";
+    static String CLAVE = "hoh6LALuy0";
 
     public SqlDbDAOFactory() {
         DRIVER = "com.mysql.jdbc.Driver";
-        URLDB = "https://remotemysql.com/phpmyadmin/db_structure.php?server=1&db=jHNInj7OkW";
+        URLDB = "jdbc:mysql://remotemysql.com/phpmyadmin/db_structure.php?server=1&db=jHNInj7OkW";
     }
 
     // crear la conexion

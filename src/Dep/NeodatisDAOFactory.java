@@ -7,20 +7,19 @@ package Dep;
 
 import org.neodatis.odb.ODB;
 import org.neodatis.odb.ODBFactory;
-
 /**
  *
  * @author 
  */
 public class NeodatisDAOFactory extends DAOFactory {
 
-    static ODB odb = null;
+   static ODB odb = null;
 
     public NeodatisDAOFactory() {
     }
 
     public static ODB crearConexion() {
-        if (odb == null) {
+       if (odb == null) {
             odb = ODBFactory.open("Departamento.BD");
         }
         return odb;
