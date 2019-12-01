@@ -16,13 +16,13 @@ public class SqlDbDAOFactory extends DAOFactory {
 
     static Connection conexion = null;
     static String DRIVER = "com.mysql.jdbc.Driver";
-    static String URLDB = "jdbc:mysql://remotemysql.com/phpmyadmin/db_structure.php?server=1&db=jHNInj7OkW";
-    static String USUARIO = "jHNInj7OkW";
-    static String CLAVE = "hoh6LALuy0";
+    static String URLDB = "jdbc:mysql://agarcia.salesianas.es/agarcia_empleados";
+    static String USUARIO = "empleados";
+    static String CLAVE = "826Da?cp";
 
     public SqlDbDAOFactory() {
         DRIVER = "com.mysql.jdbc.Driver";
-        URLDB = "jdbc:mysql://remotemysql.com/phpmyadmin/db_structure.php?server=1&db=jHNInj7OkW";
+        URLDB = "jdbc:mysql://agarcia.salesianas.es/agarcia_empleados";
     }
 
     // crear la conexion
@@ -49,5 +49,10 @@ public class SqlDbDAOFactory extends DAOFactory {
     @Override
     public DepartamentoDAO getDepartamentoDAO() {
         return new SqlDbDepartamentoImpl();
+    }
+
+    @Override
+    public EmpleadoDAO getEmpleadoDAO() {
+        return new SqlDbEmpleadoImpl();
     }
 }

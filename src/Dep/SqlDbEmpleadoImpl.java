@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 /**
  *
@@ -35,10 +34,13 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
     @Override
     public boolean InsertarEmp(Empleado emp) {
        boolean valor = false;
-        String sql = "INSERT INTO empleados VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO empleados VALUES(?, ?, ?, ?, ?,?,?)";
         PreparedStatement sentencia;
+        
         try {
-            sentencia = conexion.prepareStatement(sql);
+             sentencia = conexion.prepareStatement(sql);
+          if(!sentencia.execute("SELECT EXISTS(SELECT * from empleados where emp_no="+emp.getEmp_no()+")")&&sentencia.execute("SELECT EXISTS(SELECT * from empleados where emp_no="+emp.getDir()+")")){
+           
             sentencia.setInt(1, emp.getEmp_no());
             sentencia.setString(2, emp.getEapellido());
             sentencia.setDouble(7, emp.getSalario());
@@ -53,10 +55,15 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
                  System.out.printf("Empleado %d insertado%n", emp.getEmp_no());
             }
             sentencia.close();
+          }else{
+              System.out.println("ERROR, EL EMPLEADO YA EXISTE EN LA BASE DE DATOS");
+          }
 
         } catch (SQLException e) {
             MensajeExcepcion(e);      
         }
+        
+        
         return valor;
     }
 
@@ -67,6 +74,8 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
         PreparedStatement sentencia;
         try {
             sentencia = conexion.prepareStatement(sql);
+          if(!sentencia.execute("SELECT EXISTS(SELECT * from empleados where dir="+id+")")){
+              
             sentencia.setInt(1, id);
             int filas = sentencia.executeUpdate();
             //System.out.printf("Filas eliminadas: %d%n", filas);
@@ -75,6 +84,8 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
                 System.out.printf("Empleado %d eliminado%n", id);
             }
             sentencia.close();
+          }else{
+          }
         } catch (SQLException e) {
             MensajeExcepcion(e);      
         }
@@ -88,6 +99,7 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
         PreparedStatement sentencia;
         try {
             sentencia = conexion.prepareStatement(sql);
+         if(sentencia.execute("SELECT EXISTS(SELECT * from empleados where emp_no="+emp.getDir()+")")){
             sentencia.setInt(7, Emp_no);
             sentencia.setString(1, emp.getEapellido());
             sentencia.setInt(2, emp.getEdept());
@@ -102,6 +114,9 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
                 System.out.printf("Departamento %d modificado%n", Emp_no);
             }
             sentencia.close();
+         }else{
+             System.out.println("NO EXISTE EL DIRECTOR");
+         }
         } catch (SQLException e) {
            MensajeExcepcion(e);      
         }

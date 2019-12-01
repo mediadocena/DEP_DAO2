@@ -6,7 +6,7 @@ public abstract class DAOFactory {
   public static final int NEODATIS = 2;
  
   public abstract DepartamentoDAO getDepartamentoDAO();
-  
+  public abstract EmpleadoDAO getEmpleadoDAO();
   public static DAOFactory getDAOFactory(int bd) {  
     switch (bd) {
       case MYSQL:          
