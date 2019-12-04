@@ -32,7 +32,7 @@ public class NeodatisDAOFactory extends DAOFactory {
 
     @Override
     public EmpleadoDAO getEmpleadoDAO() {
-        return getEmpleadoDAO();
+        return new NeodatisEmpleadoImpl();
     }
 
 }

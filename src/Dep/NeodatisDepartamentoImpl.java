@@ -25,24 +25,38 @@ public class NeodatisDepartamentoImpl implements DepartamentoDAO {
 
     @Override
     public boolean InsertarDep(Departamento dep) {
-        bd.store(dep);
-        bd.commit();
-        System.out.printf("Departamento: %d Insertado %n", dep.getDeptno());
-        return true;
+        Departamento dpto=ConsultarDep(dep.getDeptno());
+        if(dpto.getDnombre().equalsIgnoreCase("no existe")){
+            bd.store(dep);
+            bd.commit();
+            System.out.printf("Departamento: %d Insertado %n", dep.getDeptno());
+            return true;
+        }
+        else{
+            System.out.println("Ya existe ese departamento");
+            return false;
+        }
     }
 
     @Override
     public boolean EliminarDep(int deptno) {
         boolean valor = false;
         IQuery query = new CriteriaQuery(Departamento.class, Where.equal("deptno", deptno));
+        IQuery queryEmpleados = new CriteriaQuery(Empleado.class, Where.equal("edept", deptno));
         Objects<Departamento> objetos = bd.getObjects(query);
-        try {
-            Departamento depart = (Departamento) objetos.getFirst();
-            bd.delete(depart);
-            bd.commit();
-            valor = true;
-        } catch (IndexOutOfBoundsException i) {
-            System.out.printf("Departamento a eliminar: %d No existe%n", deptno);
+        Objects<Empleado> empleados=bd.getObjects(queryEmpleados);
+        if(empleados.isEmpty()){
+            try {
+                Departamento depart = (Departamento) objetos.getFirst();
+                bd.delete(depart);
+                System.out.printf("Departamento eliminado");
+                bd.commit();
+                valor = true;
+            } catch (IndexOutOfBoundsException i) {
+                System.out.printf("Departamento a eliminar: %d No existe%n", deptno);
+            }
+        }else{
+            System.out.printf("Ese departamento tiene empleados");
         }
 
         return valor;

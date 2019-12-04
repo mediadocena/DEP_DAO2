@@ -39,7 +39,7 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
         
         try {
              sentencia = conexion.prepareStatement(sql);
-          if(!sentencia.execute("SELECT EXISTS(SELECT * from empleados where emp_no="+emp.getEmp_no()+")")&&sentencia.execute("SELECT EXISTS(SELECT * from empleados where emp_no="+emp.getDir()+")")){
+          if(ifExists("SELECT * from departamentos where dept_no="+emp.getEdept())&&ifExists("SELECT * from empleados where emp_no="+emp.getDir())){
            
             sentencia.setInt(1, emp.getEmp_no());
             sentencia.setString(2, emp.getEapellido());
@@ -66,15 +66,20 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
         
         return valor;
     }
+    public boolean ifExists(String sSQL) throws SQLException {
+    PreparedStatement ps = conexion.prepareStatement(sSQL);
+    ResultSet rs = ps.executeQuery();
+    return rs.next();
+    }
 
     @Override
     public boolean EliminarEmp(int id) {
           boolean valor = false;
-        String sql = "DELETE FROM empleados WHERE Emp_no = ? ";
+        String sql = "DELETE FROM empleados WHERE emp_no = ? ";
         PreparedStatement sentencia;
         try {
             sentencia = conexion.prepareStatement(sql);
-          if(!sentencia.execute("SELECT EXISTS(SELECT * from empleados where dir="+id+")")){
+          if(!ifExists("SELECT dir from empleados where dir=+"+id)){
               
             sentencia.setInt(1, id);
             int filas = sentencia.executeUpdate();
@@ -85,6 +90,7 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
             }
             sentencia.close();
           }else{
+              System.out.println("No es posible eliminar si tiene empleados a cargo");
           }
         } catch (SQLException e) {
             MensajeExcepcion(e);      
@@ -95,23 +101,23 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
     @Override
     public boolean ModificarEmp(int Emp_no, Empleado emp) {
           boolean valor = false;
-        String sql = "UPDATE empleados SET Eapellido= ?, Edept = ?,Oficio = ?,Dir = ?,Fecha_alt = ?,Salario = ? WHERE dept_no = ? ";
+        String sql = "UPDATE empleados SET eapellido= ?, edept = ?,oficio = ?,dir = ?,fecha_alt = ?,salario = ? WHERE emp_no = ? ";
         PreparedStatement sentencia;
         try {
             sentencia = conexion.prepareStatement(sql);
-         if(sentencia.execute("SELECT EXISTS(SELECT * from empleados where emp_no="+emp.getDir()+")")){
+         if(ifExists("SELECT * from departamentos where dept_no="+emp.getEdept())&&ifExists("SELECT * from empleados where emp_no="+emp.getDir())){
             sentencia.setInt(7, Emp_no);
             sentencia.setString(1, emp.getEapellido());
             sentencia.setInt(2, emp.getEdept());
             sentencia.setString(3, emp.getOficio());
-            sentencia.setInt(2, emp.getDir());
-            sentencia.setString(4, emp.getFecha_alt());
-            sentencia.setDouble(5, emp.getSalario());
+            sentencia.setInt(4, emp.getDir());
+            sentencia.setString(5, emp.getFecha_alt());
+            sentencia.setDouble(6, emp.getSalario());
             int filas = sentencia.executeUpdate();
             //System.out.printf("Filas modificadas: %d%n", filas);
             if (filas > 0) {
                 valor = true;
-                System.out.printf("Departamento %d modificado%n", Emp_no);
+                System.out.printf("Empleado %d modificado%n", Emp_no);
             }
             sentencia.close();
          }else{
@@ -126,7 +132,7 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
    
     @Override
     public Empleado ConsultarEmp(int id) {
-          String sql = "SELECT * FROM empleados WHERE Emp_no =  ?";
+          String sql = "SELECT * FROM empleados WHERE emp_no =  ?";
         PreparedStatement sentencia;
         Empleado emp = new Empleado();        
         try {
@@ -134,12 +140,12 @@ public class SqlDbEmpleadoImpl implements EmpleadoDAO {
             sentencia.setInt(1, id);
             ResultSet rs = sentencia.executeQuery();          
             if (rs.next()) {
-                emp.setEdept(rs.getInt("Edept"));
-                emp.setEapellido(rs.getString("Eapellido"));
-                emp.setDir(rs.getInt("Dir"));
-                emp.setOficio(rs.getString("Oficio"));
-                emp.setSalario(rs.getDouble("Salario"));
-                //TODO DATE
+                emp.setEdept(rs.getInt("edept"));
+                emp.setEapellido(rs.getString("eapellido"));
+                emp.setDir(rs.getInt("dir"));
+                emp.setOficio(rs.getString("oficio"));
+                emp.setSalario(rs.getDouble("salario"));
+               
             }
             else
                 System.out.printf("Empleado: %d No existe%n",id);
